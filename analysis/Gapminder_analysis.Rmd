@@ -1,0 +1,86 @@
+---
+title: "Gapminder Analysis"
+author: "Calla Bush St George"
+date: "`r Sys.Date()`"
+output: 
+  html_document:
+      toc: yes
+      toc_float: yes
+      code_folding: hide
+editor_options: 
+  chunk_output_type: console
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+This is the first line of my document. In this document, I will analyze
+how life expectancy has changed over time.
+
+# Reading in Gapminder data
+
+```{r reading in data}
+gapminder_df <- read.csv("Data/gapminder_data.csv")
+
+```
+
+## Smaller header
+
+### Even smaller header
+
+##### Very small header
+
+Lists: \* List item 1 \* List item 2
+
+Another type of list: - Hyphen list - Hyphen list
+
+Numbered list: 1. Number one 2. Number two \* Sub list 3. Number 3
+
+We make text **bold with two asterisks** or *italic with one asterisk*
+
+We can also insert Greek letters with $\mu$ or $\Delta$ .
+
+We can make hyperlinks [bluewords](etherpadlink)
+
+# Calculating summary statistics
+
+```{r Calculating-median-pop, echo=FALSE}
+med_pop <- median(gapminder_df$pop)
+
+num_obs <- nrow(gapminder_df)
+```
+
+Over `r num_obs` observations, the median population was
+`r round(med_pop/10e6)` million people
+
+#Installing nationalparkcolors package
+
+```{r install nationalparkscolors}
+#install.packages("devtools")
+devtools::install_github("katiejolly/nationalparkcolors")
+install.packages("wesanderson")
+```
+
+# Plotting life expectancy over the years
+
+```{r Line Graph, warning = FALSE}
+library(nationalparkcolors)
+library(wesanderson)
+library(ggplot2)
+pal <- park_palette("SmokyMountains",5)
+ggplot(gapminder_df, aes(x = year, y = lifeExp, group = country, color = continent)) +
+  geom_smooth() + scale_y_log10() + scale_x_continuous(limits = c(1997, 2007))
+
+```
+
+#Plotting population distribution
+
+```{r histogram, message = FALSE, fig.width = 10}
+ggplot(gapminder_df, aes(x = pop)) +
+  geom_histogram()
+```
+
+
